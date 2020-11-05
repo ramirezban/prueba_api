@@ -4,10 +4,11 @@ require 'json'
 require 'openssl'
 
 #link de la pagina de la nasa y su api_key
-url ="https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key="
+#se agrego &page=1 en la url (25 elementos)
+url ="https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&page=1&api_key="
 api_key = 'zDHUpskY7qfXPhlMfQKD80GqF4bfX3djzuKDzODZ'
 
-# get_request method
+#metodo request url y api_key
 def request(url ,api_key)
   data=url+api_key
   url = URI(data)
@@ -17,8 +18,12 @@ def request(url ,api_key)
   response = http.request(request)
   JSON.parse(response.read_body)
 end
+
+#hash con los resultados variable aswers
 aswers=request(url, api_key)
 
+
+#definimos el head estructura html
 def head()
   head =   '<!DOCTYPE html>
   <html lang="es">
@@ -37,16 +42,11 @@ def head()
 
   <div class="container" >
 
-  <div class="card mx-auto mt-3 mb-3" style="width: 35rem;">
-      <ul style="list-style-type: none;padding-left: 0px;"": none;" class="justify-content-center mx-auto my-auto">
-        <li><img src="curiosity.jpg" style="width:500px;height:400px" class="card-img-top "alt="marte"></li>
-      </ul>
-  </div>
-
   '
 end
+#method build_web_page recibe respuesta
+#obtener respuesta y construir pagina (listas con fotos de marte)
 
-#obtener respuesta y construir web por iteracion de listas
 def build_web_page(aswers)
   content=''
   aswers.each do |k,v|
@@ -64,12 +64,13 @@ def build_web_page(aswers)
 end
 #cerrando etiquetas html
 def closing()
-  finish_body=
-'   </div>
+  finish_body='
+    </div>
   </body>
 </html>'
 end
-
+#output concatenacion de los metodos que construyen la pagina
 output= head + build_web_page(aswers)+closing
 
+#Escribimos en un formato html
 File.write('index_api.html', output)
