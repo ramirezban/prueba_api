@@ -40,8 +40,9 @@ def head()
 </head>
   <body>
 
-  <div class="container" >
-
+    <div class="container" >
+      <div class="card mx-auto mt-3 mb-3" style="width: 35rem;">
+          <ul>
   '
 end
 #method build_web_page recibe respuesta
@@ -52,11 +53,7 @@ def build_web_page(aswers)
   aswers.each do |k,v|
     v.each do |photos|
       content += "
-      <div class='card mx-auto mt-3 mb-3' style='width: 35rem;'>
-          <ul style='list-style-type: none;padding-left: 0px;'': none;' class='mx-auto my-auto'>
-            <li><img src='#{photos["img_src"]}' style='width:500px;height:400px' class='card-img-top 'alt='marte'></li>
-        </ul>
-      </div>
+          <li style='list-style-type: none;padding-left: 0px;'': none; class='mx-auto my-auto'><img src='#{photos["img_src"]}' style='width:500px;height:400px' class='card-img-top  mt-2'alt='marte'></li>
       "
     end
   end
@@ -65,6 +62,8 @@ end
 #cerrando etiquetas html
 def closing()
   finish_body='
+        </ul>
+      </div>
     </div>
   </body>
 </html>'
